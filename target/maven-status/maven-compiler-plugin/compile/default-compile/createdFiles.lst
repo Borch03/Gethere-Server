@@ -1,6 +1,0 @@
-pl/edu/agh/gethere/controller/JerseyConfig.class
-pl/edu/agh/gethere/controller/TripleController.class
-pl/edu/agh/gethere/database/RepositoryManager.class
-pl/edu/agh/gethere/database/RepositoryConfigurator.class
-pl/edu/agh/gethere/GethereServerApplication.class
-pl/edu/agh/gethere/model/Triple.class
