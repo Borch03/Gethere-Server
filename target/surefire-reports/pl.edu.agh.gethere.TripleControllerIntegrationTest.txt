@@ -1,0 +1,14 @@
+-------------------------------------------------------------------------------
+Test set: pl.edu.agh.gethere.TripleControllerIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 3.378 sec <<< FAILURE! - in pl.edu.agh.gethere.TripleControllerIntegrationTest
+getTriple(pl.edu.agh.gethere.TripleControllerIntegrationTest)  Time elapsed: 1.357 sec  <<< ERROR!
+org.springframework.web.client.RestClientException: Could not extract response: no suitable HttpMessageConverter found for response type [class pl.edu.agh.gethere.model.Triple] and content type [text/html;charset=utf-8]
+	at org.springframework.web.client.HttpMessageConverterExtractor.extractData(HttpMessageConverterExtractor.java:109)
+	at org.springframework.web.client.RestTemplate$ResponseEntityResponseExtractor.extractData(RestTemplate.java:835)
+	at org.springframework.web.client.RestTemplate$ResponseEntityResponseExtractor.extractData(RestTemplate.java:819)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:599)
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:557)
+	at org.springframework.web.client.RestTemplate.getForEntity(RestTemplate.java:289)
+	at pl.edu.agh.gethere.TripleControllerIntegrationTest.getTriple(TripleControllerIntegrationTest.java:30)
+
