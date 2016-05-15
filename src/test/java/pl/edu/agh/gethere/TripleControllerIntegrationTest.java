@@ -11,7 +11,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.client.RestTemplate;
 import pl.edu.agh.gethere.model.Triple;
 
-import static org.assertj.core.api.Assertions.*;
+import javax.ws.rs.core.Response;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Dominik on 14.05.2016.
@@ -27,7 +29,8 @@ public class TripleControllerIntegrationTest {
 
     @Test
     public void getTriple() {
-        ResponseEntity<Triple> entity = restTemplate.getForEntity("http://localhost:9000/triple", Triple.class);
+        Triple triple = new Triple("exampleSubject", "examplePredicate", "exampleObject");
+        ResponseEntity<Triple> entity = restTemplate.postForEntity("http://localhost:9000/triple", triple, Triple.class);
 
         assertThat(entity.getStatusCode().is2xxSuccessful()).isTrue();
     }

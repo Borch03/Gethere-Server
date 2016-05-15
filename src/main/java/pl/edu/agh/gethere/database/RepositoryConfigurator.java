@@ -21,9 +21,8 @@ public class RepositoryConfigurator {
     public RepositoryConfigurator() {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         Properties prop = new Properties();
-        InputStream input = null;
-        try {
-            prop.load(new FileReader(PROPERTIES_FILE));
+        try(InputStream resourceStream = loader.getResourceAsStream(PROPERTIES_FILE)) {
+            prop.load(resourceStream);
             sesameServer = prop.getProperty("sesameServer");
             repositoryID = prop.getProperty("repositoryID");
             logger.info("Successfully get sesame properties");

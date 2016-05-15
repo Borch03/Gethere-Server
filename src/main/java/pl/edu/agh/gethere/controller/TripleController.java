@@ -1,12 +1,12 @@
 package pl.edu.agh.gethere.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
+import pl.edu.agh.gethere.database.RepositoryManager;
 import pl.edu.agh.gethere.model.Triple;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import java.util.ArrayList;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -17,21 +17,30 @@ import java.util.List;
 @Path("triples")
 public class TripleController {
 
-    //TODO - implement getting and adding triples to repository
+    final static Logger logger = Logger.getLogger(TripleController.class);
+
+    @POST
+    @Consumes("application/json")
+    public Response addTriple(Triple triple) {
+
+        RepositoryManager repositoryManager = new RepositoryManager();
+        repositoryManager.addStatement(triple);
+        repositoryManager.tearDown();
+
+        logger.info("Successfully added triple to Repository");
+
+        return Response.status(204).build();
+    }
 
     @GET
     @Produces("application/json")
     public List<Triple> getTriples() {
-        String exampleSubject = "exampleSubject";
-        String examplePredicate = "examplePredicate";
-        String exampleObject = "exampleObject";
 
-        List<Triple> triples = new ArrayList<>();
+        RepositoryManager repositoryManager = new RepositoryManager();
+        List<Triple> triples = repositoryManager.getAllTriples();
+        repositoryManager.tearDown();
 
-        for (int i = 0; i < 10; i++) {
-            Triple triple = new Triple(exampleSubject+i, examplePredicate+i, exampleObject+i);
-            triples.add(triple);
-        }
+        logger.info("Successfully got all triples from Repository");
 
         return triples;
     }

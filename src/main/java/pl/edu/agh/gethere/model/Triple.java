@@ -1,5 +1,7 @@
 package pl.edu.agh.gethere.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 
@@ -18,6 +20,9 @@ public class Triple {
         this.subject = subject;
         this.predicate = predicate;
         this.object = object;
+    }
+
+    public Triple() {
     }
 
     public String getSubject() {
