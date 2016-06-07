@@ -57,7 +57,7 @@ public class RepositoryManager {
         ValueFactory factory = SimpleValueFactory.getInstance();
         IRI subject = factory.createIRI(triple.getSubject());
         IRI predicate = factory.createIRI(triple.getPredicate());
-        Literal object = factory.createLiteral(triple.getObject());
+        IRI object = factory.createIRI(triple.getObject());
 
         connection.add(subject, predicate, object);
     }
