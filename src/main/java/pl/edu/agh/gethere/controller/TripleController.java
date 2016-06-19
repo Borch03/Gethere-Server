@@ -21,13 +21,15 @@ public class TripleController {
 
     @POST
     @Consumes("application/json")
-    public Response addTriple(Triple triple) {
+    public Response addTriple(List<Triple> triples) {
 
         RepositoryManager repositoryManager = new RepositoryManager();
-        repositoryManager.addStatement(triple);
+        for (Triple triple : triples) {
+            repositoryManager.addStatement(triple);
+        }
         repositoryManager.tearDown();
 
-        logger.info("Successfully added triple to Repository");
+        logger.info("Successfully added triples to Repository");
 
         return Response.status(204).build();
     }
