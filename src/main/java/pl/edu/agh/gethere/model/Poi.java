@@ -1,5 +1,7 @@
 package pl.edu.agh.gethere.model;
 
+import org.assertj.core.error.ShouldBeEqualToIgnoringFields;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -9,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(namespace = "pl.edu.agh.gethere.poi")
 public class Poi {
 
+    private String id;
     private String name;
     private String type;
     private String city;
@@ -16,7 +19,8 @@ public class Poi {
     private String number;
     private String coordinates;
 
-    public Poi(String name, String type, String city, String street, String number, String coordinates) {
+    public Poi(String id, String name, String type, String city, String street, String number, String coordinates) {
+        this.id = id;
         this.name = name;
         this.type = type;
         this.city = city;
@@ -26,6 +30,14 @@ public class Poi {
     }
 
     public Poi() {}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

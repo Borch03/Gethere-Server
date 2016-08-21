@@ -6,7 +6,6 @@ import pl.edu.agh.gethere.database.RepositoryManager;
 import pl.edu.agh.gethere.model.Poi;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -28,7 +27,7 @@ public class KeywordSearchController {
         List<Poi> pois = repositoryManager.getKeywordPois(keyword);
         repositoryManager.tearDown();
 
-        logger.info("Found" + pois.size() + " matching POIs");
+        logger.info("Found " + pois.size() + " matching POIs");
 
         return pois;
     }

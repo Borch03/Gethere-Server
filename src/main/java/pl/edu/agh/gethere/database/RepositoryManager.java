@@ -111,12 +111,15 @@ public class RepositoryManager {
             TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, query);
             TupleQueryResult poiResult = tupleQuery.evaluate();
 
-            pois.add(createPoi(poiResult));
+            String id = poiId.replace(GETHERE_URL, "");
+            pois.add(createPoi(poiResult, id));
         }
         return pois;
     }
 
-    private Poi createPoi(TupleQueryResult result) {
+    private Poi createPoi(TupleQueryResult result, String poiId) {
+
+        String id = poiId;
         String name = null;
         String type = null;
         String city = null;
@@ -141,7 +144,7 @@ public class RepositoryManager {
                 coordinates = object;
             }
         }
-        return new Poi(name, type, city, street, number, coordinates);
+        return new Poi(id, name, type, city, street, number, coordinates);
     }
 
     public Repository getRepository() {
