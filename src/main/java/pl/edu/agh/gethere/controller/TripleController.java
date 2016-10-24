@@ -31,7 +31,7 @@ public class TripleController {
 
         logger.info("Successfully added triples to Repository");
 
-        return Response.status(204).build();
+        return Response.status(200).build();
     }
 
     @GET

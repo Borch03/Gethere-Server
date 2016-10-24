@@ -1,9 +1,6 @@
 package pl.edu.agh.gethere.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.xml.bind.annotation.*;
-import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by Dominik on 14.05.2016.

@@ -3,7 +3,6 @@ package pl.edu.agh.gethere.database;
 import org.apache.log4j.Logger;
 import org.openrdf.model.IRI;
 import org.openrdf.model.Literal;
-import org.openrdf.model.Value;
 import org.openrdf.model.ValueFactory;
 import org.openrdf.model.impl.SimpleValueFactory;
 import org.openrdf.query.BindingSet;
@@ -16,8 +15,8 @@ import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.http.HTTPRepository;
 import pl.edu.agh.gethere.model.Poi;
 import pl.edu.agh.gethere.model.Triple;
+import pl.edu.agh.gethere.util.TupleParser;
 
-import javax.ws.rs.GET;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,13 +26,8 @@ import java.util.List;
 public class RepositoryManager {
 
     public final static String GETHERE_URL = "http://gethere.agh.edu.pl/#";
-
-    public final static String TYPE_IRI = GETHERE_URL+ "isTypeOf";
-    public final static String NAME_IRI = GETHERE_URL+ "hasName";
-    public final static String CITY_IRI = GETHERE_URL+ "isInCity";
-    public final static String STREET_IRI = GETHERE_URL+ "isOnStreet";
-    public final static String NUMBER_IRI = GETHERE_URL+ "hasNumber";
-    public final static String COORDINATES_IRI = GETHERE_URL+ "hasCoordinates";
+    public final static String ADDITIONAL_INFO_SUBJECT_IRI = "http://gethere.agh.edu.pl/#additionalInfo";
+    public final static String ADDITIONAL_INFO_PREDICATE_IRI = "http://gethere.agh.edu.pl/#hasValue";
 
     final static Logger logger = Logger.getLogger(RepositoryManager.class);
 
@@ -93,58 +87,54 @@ public class RepositoryManager {
         return triples;
     }
 
-    public List<Poi> getKeywordPois(String keyword) {
-        String poisQuery = "SELECT ?s ?p ?o  WHERE { ?s ?p ?o .FILTER regex(str(?o), \"" + keyword + "\") .}";
-
-        TupleQuery poisTupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, poisQuery);
-        TupleQueryResult result = poisTupleQuery.evaluate();
-
-        List<String> poiIds = new ArrayList<>();
-        while (result.hasNext()) {
-            BindingSet bindingSet = result.next();
-            String subject = bindingSet.getValue("s").stringValue();
-            poiIds.add(subject);
-        }
-        List<Poi> pois = new ArrayList<>();
-        for (String poiId : poiIds) {
-            String query = "SELECT ?s ?p ?o WHERE { <" + poiId + "> ?p ?o . }";
-            TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, query);
-            TupleQueryResult poiResult = tupleQuery.evaluate();
-
-            String id = poiId.replace(GETHERE_URL, "");
-            pois.add(createPoi(poiResult, id));
-        }
-        return pois;
+    public void addAdditionalInfoDefinition(String definition) {
+        ValueFactory factory = SimpleValueFactory.getInstance();
+        IRI subject = factory.createIRI(ADDITIONAL_INFO_SUBJECT_IRI);
+        IRI predicate = factory.createIRI(ADDITIONAL_INFO_PREDICATE_IRI);
+        Literal object = factory.createLiteral(definition);
+        connection.add(subject, predicate, object);
     }
 
-    private Poi createPoi(TupleQueryResult result, String poiId) {
+    public List<String> getAdditionalInfoDefinitions() {
+        String query = "SELECT ?o WHERE { <" + ADDITIONAL_INFO_SUBJECT_IRI + "> ?p ?o . }";
+        TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, query);
+        TupleQueryResult result = tupleQuery.evaluate();
 
-        String id = poiId;
-        String name = null;
-        String type = null;
-        String city = null;
-        String street = null;
-        String number = null;
-        String coordinates = null;
+        List<String> additionalInfoDefinitions = new ArrayList<>();
         while (result.hasNext()) {
             BindingSet bindingSet = result.next();
-            String predicate = bindingSet.getValue("p").stringValue();
             String object = bindingSet.getValue("o").stringValue();
-            if (predicate.equals(NAME_IRI)) {
-                name = object;
-            } else if (predicate.equals(TYPE_IRI)) {
-                type = object;
-            } else if (predicate.equals(CITY_IRI)) {
-                city = object;
-            } else if (predicate.equals(STREET_IRI)) {
-                street = object;
-            } else if (predicate.equals(NUMBER_IRI)) {
-                number = object;
-            } else if (predicate.equals(COORDINATES_IRI)) {
-                coordinates = object;
+            additionalInfoDefinitions.add(object);
+        }
+        return additionalInfoDefinitions;
+    }
+
+    public List<Poi> getKeywordPois(String keyword) {
+        StringBuilder poiListQuery = new StringBuilder();
+        poiListQuery.append("PREFIX gethere: <" + GETHERE_URL + "> \n");
+        poiListQuery.append("SELECT ?s ?p ?o  WHERE { ?s ?p ?o .FILTER regex(str(?o), \"" + keyword + "\") .}");
+
+        TupleQuery poisTupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, poiListQuery.toString());
+        TupleQueryResult result = poisTupleQuery.evaluate();
+
+        TupleParser tupleParser = new TupleParser();
+        List<String> poiIds = tupleParser.parsePoiList(result);
+
+        List<Poi> pois = new ArrayList<>();
+        for (String poiId : poiIds) {
+            StringBuilder poiQuery = new StringBuilder();
+            poiQuery.append("PREFIX gethere: <" + GETHERE_URL + "> \n");
+            poiQuery.append("SELECT ?s ?p ?o WHERE { <" + poiId + "> ?p ?o . }");
+            TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, poiQuery.toString());
+            TupleQueryResult poiResult = tupleQuery.evaluate();
+            String id = poiId.replace(GETHERE_URL, "");
+            if (tupleParser.parsePoi(poiResult, id) != null) {
+                pois.add(tupleParser.parsePoi(poiResult, id));
+            } else {
+                logger.warn("POI with ID: " + id + " is incomplete. POI has been ignored.");
             }
         }
-        return new Poi(id, name, type, city, street, number, coordinates);
+        return pois;
     }
 
     public Repository getRepository() {

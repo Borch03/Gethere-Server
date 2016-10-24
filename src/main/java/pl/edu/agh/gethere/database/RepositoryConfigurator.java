@@ -1,11 +1,11 @@
 package pl.edu.agh.gethere.database;
 
+import org.apache.log4j.Logger;
+
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
-
-import org.apache.log4j.Logger;
 
 /**
  * Created by Dominik on 16.04.2016.

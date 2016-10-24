@@ -1,8 +1,7 @@
 package pl.edu.agh.gethere.model;
 
-import org.assertj.core.error.ShouldBeEqualToIgnoringFields;
-
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.HashMap;
 
 /**
  * Created by Dominik on 18.06.2016.
@@ -14,19 +13,15 @@ public class Poi {
     private String id;
     private String name;
     private String type;
-    private String city;
-    private String street;
-    private String number;
     private String coordinates;
+    private HashMap<String, String> additionalInfo;
 
-    public Poi(String id, String name, String type, String city, String street, String number, String coordinates) {
+    public Poi(String id, String name, String type, String coordinates, HashMap<String, String> additionalInfo) {
         this.id = id;
         this.name = name;
         this.type = type;
-        this.city = city;
-        this.street = street;
-        this.number = number;
         this.coordinates = coordinates;
+        this.additionalInfo = additionalInfo;
     }
 
     public Poi() {}
@@ -55,35 +50,19 @@ public class Poi {
         this.type = type;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
     public String getCoordinates() {
         return coordinates;
     }
 
     public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public HashMap<String, String> getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(HashMap<String, String> additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 }
