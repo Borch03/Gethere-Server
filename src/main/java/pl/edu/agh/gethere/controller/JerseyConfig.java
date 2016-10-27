@@ -13,5 +13,6 @@ public class JerseyConfig extends ResourceConfig {
     public JerseyConfig() {
         register(TripleController.class);
         register(KeywordSearchController.class);
+        register(AdditionalPoiInfoController.class);
     }
 }

@@ -96,7 +96,7 @@ public class RepositoryManager {
     }
 
     public List<String> getAdditionalInfoDefinitions() {
-        String query = "SELECT ?o WHERE { <" + ADDITIONAL_INFO_SUBJECT_IRI + "> ?p ?o . }";
+        String query = "SELECT ?o WHERE { <" + ADDITIONAL_INFO_SUBJECT_IRI + "> <" + ADDITIONAL_INFO_PREDICATE_IRI + "> ?o . }";
         TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, query);
         TupleQueryResult result = tupleQuery.evaluate();
 
@@ -128,8 +128,9 @@ public class RepositoryManager {
             TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, poiQuery.toString());
             TupleQueryResult poiResult = tupleQuery.evaluate();
             String id = poiId.replace(GETHERE_URL, "");
-            if (tupleParser.parsePoi(poiResult, id) != null) {
-                pois.add(tupleParser.parsePoi(poiResult, id));
+            Poi poi = tupleParser.parsePoi(poiResult, id);
+            if (poi != null) {
+                pois.add(poi);
             } else {
                 logger.warn("POI with ID: " + id + " is incomplete. POI has been ignored.");
             }

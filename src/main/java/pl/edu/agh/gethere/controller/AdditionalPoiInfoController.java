@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 @Component
-@Path("additional_poi_info")
+@Path("additional_info")
 public class AdditionalPoiInfoController {
 
     final static Logger logger = Logger.getLogger(AdditionalPoiInfoController.class);
@@ -26,7 +26,7 @@ public class AdditionalPoiInfoController {
         repositoryManager.addAdditionalInfoDefinition(definition);
         repositoryManager.tearDown();
 
-        logger.info("Successfully added additional POI info definition to Repository");
+        logger.info("Successfully added " + definition + " info definition to Repository");
 
         return Response.status(200).build();
     }

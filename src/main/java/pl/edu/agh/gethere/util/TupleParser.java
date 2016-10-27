@@ -42,11 +42,11 @@ public class TupleParser {
             if (predicate.equals(NAME_PREDICATE)) {
                 poi.setName(object);
             } else if (predicate.equals(TYPE_PREDICATE)) {
-                poi.setType(object);
+                poi.setType(object.replace(GETHERE_URL, ""));
             } else if (predicate.equals(COORDINATES_PREDICATE)) {
                 poi.setCoordinates(object);
-            } else if (predicate.matches("(?=^has)(Info$)")) {
-                additionalInfo.put(predicate.replace("(^has)(Info$)",""), object);
+            } else if (predicate.matches("has.*Info")) {
+                additionalInfo.put(predicate.replace("(^has)|(Info$)",""), object);
             } else {
                 logger.warn("Unrecognized POI parameter: " + predicate);
             }

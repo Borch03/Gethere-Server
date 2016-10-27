@@ -5,11 +5,9 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.client.RestTemplate;
-import pl.edu.agh.gethere.main.GethereServerApplication;
 import pl.edu.agh.gethere.model.Triple;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,10 +26,8 @@ public class TripleControllerIntegrationTest {
 
     @Test
     public void getTriple() {
-        Triple triple = new Triple("exampleSubject", "examplePredicate", "exampleObject");
-        ResponseEntity<Triple> entity = restTemplate.postForEntity("http://localhost:9000/triple", triple, Triple.class);
+        Triple triple = restTemplate.getForObject("http://localhost:9000/triples", Triple.class);
 
-        assertThat(entity.getStatusCode().is2xxSuccessful()).isTrue();
     }
 
 }
