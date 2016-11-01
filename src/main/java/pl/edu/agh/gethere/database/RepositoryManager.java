@@ -26,8 +26,6 @@ import java.util.List;
 public class RepositoryManager {
 
     public final static String GETHERE_URL = "http://gethere.agh.edu.pl/#";
-    public final static String ADDITIONAL_INFO_SUBJECT_IRI = "http://gethere.agh.edu.pl/#additionalInfo";
-    public final static String ADDITIONAL_INFO_PREDICATE_IRI = "http://gethere.agh.edu.pl/#hasValue";
 
     final static Logger logger = Logger.getLogger(RepositoryManager.class);
 
@@ -88,16 +86,24 @@ public class RepositoryManager {
     }
 
     public void addAdditionalInfoDefinition(String definition) {
-        ValueFactory factory = SimpleValueFactory.getInstance();
-        IRI subject = factory.createIRI(ADDITIONAL_INFO_SUBJECT_IRI);
-        IRI predicate = factory.createIRI(ADDITIONAL_INFO_PREDICATE_IRI);
-        Literal object = factory.createLiteral(definition);
-        connection.add(subject, predicate, object);
+        String subject = GETHERE_URL + "additionalInfo";
+        String predicate = GETHERE_URL + "hasValue";
+        Triple additionalInfoDefinition = new Triple(subject, predicate, definition);
+        addStatement(additionalInfoDefinition);
+    }
+
+    public void addTypeDefinition(String definition) {
+        String predicate = GETHERE_URL + "isSubclassOf";
+        String object = GETHERE_URL + "Location";
+        Triple type = new Triple(definition, predicate, object);
+        addStatement(type);
     }
 
     public List<String> getAdditionalInfoDefinitions() {
-        String query = "SELECT ?o WHERE { <" + ADDITIONAL_INFO_SUBJECT_IRI + "> <" + ADDITIONAL_INFO_PREDICATE_IRI + "> ?o . }";
-        TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, query);
+        StringBuilder additionalInfoQuery = new StringBuilder();
+        additionalInfoQuery.append("PREFIX gethere: <" + GETHERE_URL + "> \n");
+        additionalInfoQuery.append("SELECT ?o WHERE { gethere:additionalInfo gethere:hasValue ?o . }");
+        TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, additionalInfoQuery.toString());
         TupleQueryResult result = tupleQuery.evaluate();
 
         List<String> additionalInfoDefinitions = new ArrayList<>();
@@ -112,7 +118,10 @@ public class RepositoryManager {
     public List<Poi> getKeywordPois(String keyword) {
         StringBuilder poiListQuery = new StringBuilder();
         poiListQuery.append("PREFIX gethere: <" + GETHERE_URL + "> \n");
-        poiListQuery.append("SELECT ?s ?p ?o  WHERE { ?s ?p ?o .FILTER regex(str(?o), \"" + keyword + "\") .}");
+        poiListQuery.append("SELECT ?s ?p ?o WHERE { \n");
+        poiListQuery.append("?s gethere:isTypeOf ?type . \n");
+        poiListQuery.append("?type gethere:isSubclassOf gethere:Location . \n");
+        poiListQuery.append("?s ?p ?o .FILTER regex(str(?o), \"" + keyword + "\") . }");
 
         TupleQuery poisTupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, poiListQuery.toString());
         TupleQueryResult result = poisTupleQuery.evaluate();
@@ -123,8 +132,9 @@ public class RepositoryManager {
         List<Poi> pois = new ArrayList<>();
         for (String poiId : poiIds) {
             StringBuilder poiQuery = new StringBuilder();
-            poiQuery.append("PREFIX gethere: <" + GETHERE_URL + "> \n");
-            poiQuery.append("SELECT ?s ?p ?o WHERE { <" + poiId + "> ?p ?o . }");
+            poiQuery.append("SELECT ?s ?p ?o WHERE { \n");
+            poiQuery.append("<" + poiId + "> ?p ?o . \n");
+            poiQuery.append("?s ?p ?o .FILTER regex(str(?p), \"^" + GETHERE_URL + "\") . }");
             TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, poiQuery.toString());
             TupleQueryResult poiResult = tupleQuery.evaluate();
             String id = poiId.replace(GETHERE_URL, "");
