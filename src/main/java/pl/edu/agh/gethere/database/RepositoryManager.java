@@ -126,7 +126,7 @@ public class RepositoryManager {
         while (result.hasNext()) {
             BindingSet bindingSet = result.next();
             String subject = bindingSet.getValue("s").stringValue();
-            types.add(subject);
+            types.add(subject.replace(GETHERE_URL, ""));
         }
         return types;
     }
