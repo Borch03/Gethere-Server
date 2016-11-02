@@ -115,6 +115,22 @@ public class RepositoryManager {
         return additionalInfoDefinitions;
     }
 
+    public List<String> getTypes() {
+        StringBuilder typeQuery = new StringBuilder();
+        typeQuery.append("PREFIX gethere: <" + GETHERE_URL + "> \n");
+        typeQuery.append("SELECT ?s WHERE { ?s gethere:isSubclassOf gethere:Location . }");
+        TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, typeQuery.toString());
+        TupleQueryResult result = tupleQuery.evaluate();
+
+        List<String> types = new ArrayList<>();
+        while (result.hasNext()) {
+            BindingSet bindingSet = result.next();
+            String subject = bindingSet.getValue("s").stringValue();
+            types.add(subject);
+        }
+        return types;
+    }
+
     public List<Poi> getKeywordPois(String keyword) {
         StringBuilder poiListQuery = new StringBuilder();
         poiListQuery.append("PREFIX gethere: <" + GETHERE_URL + "> \n");
