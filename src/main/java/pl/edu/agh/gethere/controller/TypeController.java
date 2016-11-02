@@ -38,7 +38,7 @@ public class TypeController {
         List<String> types = repositoryManager.getTypes();
         repositoryManager.tearDown();
 
-        logger.info("Successfully got additional POI info definitions from Repository");
+        logger.info("Successfully got types of POI from Repository");
 
         return types;
     }
