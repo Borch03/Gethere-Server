@@ -85,11 +85,11 @@ public class RepositoryManager {
         return triples;
     }
 
-    public void addAdditionalInfoDefinition(String definition) {
-        String subject = GETHERE_URL + "additionalInfo";
+    public void addAttributeDefinition(String definition) {
+        String subject = GETHERE_URL + "attribute";
         String predicate = GETHERE_URL + "hasValue";
-        Triple additionalInfoDefinition = new Triple(subject, predicate, definition);
-        addStatement(additionalInfoDefinition);
+        Triple attributeDefinition = new Triple(subject, predicate, definition);
+        addStatement(attributeDefinition);
     }
 
     public void addTypeDefinition(String definition) {
@@ -99,20 +99,20 @@ public class RepositoryManager {
         addStatement(type);
     }
 
-    public List<String> getAdditionalInfoDefinitions() {
-        StringBuilder additionalInfoQuery = new StringBuilder();
-        additionalInfoQuery.append("PREFIX gethere: <" + GETHERE_URL + "> \n");
-        additionalInfoQuery.append("SELECT ?o WHERE { gethere:additionalInfo gethere:hasValue ?o . }");
-        TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, additionalInfoQuery.toString());
+    public List<String> getAttributeDefinitions() {
+        StringBuilder attributeQuery = new StringBuilder();
+        attributeQuery.append("PREFIX gethere: <" + GETHERE_URL + "> \n");
+        attributeQuery.append("SELECT ?o WHERE { gethere:attribute gethere:hasValue ?o . }");
+        TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, attributeQuery.toString());
         TupleQueryResult result = tupleQuery.evaluate();
 
-        List<String> additionalInfoDefinitions = new ArrayList<>();
+        List<String> attributeDefinitions = new ArrayList<>();
         while (result.hasNext()) {
             BindingSet bindingSet = result.next();
             String object = bindingSet.getValue("o").stringValue();
-            additionalInfoDefinitions.add(object);
+            attributeDefinitions.add(object);
         }
-        return additionalInfoDefinitions;
+        return attributeDefinitions;
     }
 
     public List<String> getTypes() {

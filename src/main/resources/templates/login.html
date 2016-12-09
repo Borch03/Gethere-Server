@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:substituteby="common/head"></head>
+
+<body>
+    <header th:substituteby="common/header"></header>
+    <br/><br/><br/>
+    <div class="container-fluid">
+        <div class="row row-offcanvas row-offcanvas-left">
+            <div th:substituteby="common/sidebar"></div>
+            <div class="col-sm-9 col-md-10 main">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div th:if="${loginError}" class="alert alert-danger">
+                            Your login attempt was not successful, try again.<br/>
+                        </div>
+                        <form th:action="@{/login.html}" method="post">
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="j_username">Login:</label>
+                                    <input class="form-control" type="text" id="username" name="username" autofocus="autofocus" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4 ">
+                                    <label for="j_password">Password:</label>
+                                    <input class="form-control" type="password" id="password" name="password" />
+                                </div>
+                            </div>
+                            <label class="checkbox">
+                                <input type="checkbox" value="remember-me"> Remember me </input>
+                            </label>
+                            <br/>
+                            <button class="btn btn-default btn-lg btn-primary " type="submit">Log in</button>
+                            <br/><br/>
+                            Don't have an account yet? <a href="/register" th:href="@{/register.html}">Sign up now!</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:substituteby="common/footer"></footer>
+    </div>
+</body>
+</html>

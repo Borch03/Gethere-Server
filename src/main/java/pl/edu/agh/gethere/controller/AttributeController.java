@@ -8,41 +8,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import pl.edu.agh.gethere.database.RepositoryManager;
-import pl.edu.agh.gethere.model.Triple;
 
 import java.util.List;
 
 /**
- * Created by Dominik on 14.05.2016.
+ * Created by Dominik on 20.10.2016.
  */
 
 @Controller
-@RequestMapping("/triple")
-public class TripleController {
+@RequestMapping("/attribute")
+public class AttributeController {
 
-    final static Logger logger = Logger.getLogger(TripleController.class);
+    final static Logger logger = Logger.getLogger(AttributeController.class);
 
-    @RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity addTriple(List<Triple> triples) {
+    @RequestMapping(method= RequestMethod.POST)
+    public ResponseEntity addAttributeDefinition(String definition) {
 
         RepositoryManager repositoryManager = new RepositoryManager();
-        triples.forEach(repositoryManager::addStatement);
+        repositoryManager.addAttributeDefinition(definition);
         repositoryManager.tearDown();
 
-        logger.info("Successfully added triples to Repository");
+        logger.info("Successfully added " + definition + " info definition to Repository");
 
         return new ResponseEntity<String>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(method=RequestMethod.GET)
-    public @ResponseBody List<Triple> getTriples() {
-
+    @RequestMapping(method= RequestMethod.GET)
+    public @ResponseBody List<String> getAttributeDefinitions() {
         RepositoryManager repositoryManager = new RepositoryManager();
-        List<Triple> triples = repositoryManager.getAllTriples();
+        List<String> attributeDefinitions = repositoryManager.getAttributeDefinitions();
         repositoryManager.tearDown();
 
-        logger.info("Successfully got all triples from Repository");
+        logger.info("Successfully got POI attribute definitions from Repository");
 
-        return triples;
+        return attributeDefinitions;
     }
+
 }

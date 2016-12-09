@@ -34,7 +34,7 @@ public class TupleParser {
     public Poi parsePoi(TupleQueryResult result, String id) {
         Poi poi = new Poi();
         poi.setId(id);
-        HashMap<String, String> additionalInfo = new HashMap<>();
+        HashMap<String, String> attributes = new HashMap<>();
         while (result.hasNext()) {
             BindingSet bindingSet = result.next();
             String predicate = bindingSet.getValue("p").stringValue().replace(GETHERE_URL, "");
@@ -46,12 +46,12 @@ public class TupleParser {
             } else if (predicate.equals(COORDINATES_PREDICATE)) {
                 poi.setCoordinates(object);
             } else if (predicate.matches("has.*Info")) {
-                additionalInfo.put(predicate.replace("(^has)|(Info$)",""), object);
+                attributes.put(predicate.replace("(^has)|(Info$)",""), object);
             } else {
                 logger.warn("Unrecognized POI parameter: " + predicate);
             }
         }
-        poi.setAdditionalInfo(additionalInfo);
+        poi.setAttributes(attributes);
         return ((poi.getName() != null) && (poi.getType() != null) && (poi.getCoordinates() != null)) ? poi : null;
     }
 }

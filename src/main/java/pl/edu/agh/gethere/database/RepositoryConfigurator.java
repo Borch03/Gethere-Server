@@ -25,7 +25,7 @@ public class RepositoryConfigurator {
             prop.load(resourceStream);
             sesameServer = prop.getProperty("sesameServer");
             repositoryID = prop.getProperty("repositoryID");
-            logger.info("Successfully get sesame properties");
+            logger.info("Successfully got sesame properties");
         } catch (IOException e) {
             logger.error(e.getClass().getSimpleName() + " Cannot load sesame properties");
             e.printStackTrace();
