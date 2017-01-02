@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:substituteby="common/head"></head>
+
+<body>
+<style>
+    #map-canvas {
+        height: 300px;
+        width: 400px;
+        padding: 0px;
+        margin: 0px;
+    }
+</style>
+<header th:substituteby="common/header"></header>
+<br/><br/><br/>
+<div class="container-fluid">
+    <div class="row row-offcanvas row-offcanvas-left">
+        <div th:substituteby="common/sidebar"></div>
+        <div class="col-sm-9 col-md-10 main">
+            <h3 class="page-header">Attribute Definitions</h3>
+            <div th:if="attributes!=null">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <p th:each="attribute : ${attributes}"
+                           th:text="${attribute}">Attribute Name</p>
+                    </table>
+                </div>
+            </div>
+            <div th:if="attributes==null">
+                <p class="well">No attribute definitions found.</p>
+            </div>
+            <br/><br/>
+        </div>
+    </div>
+    <footer th:substituteby="common/footer"></footer>
+</div>
+</body>
+</html>

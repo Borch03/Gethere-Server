@@ -91,6 +91,11 @@ public class RepositoryManager {
         return triples;
     }
 
+    public boolean checkIfAttributeExists(String attribute) {
+        List<String> attributes = getAttributeDefinitions();
+        return attributes.contains(attribute);
+    }
+
     public void addAttributeDefinition(String definition) {
         String attributeIri = GETHERE_URL + "Attribute";
         Triple attributeDefinition = new Triple(GETHERE_URL + definition, TYPE_PREDICATE, attributeIri);
@@ -133,6 +138,11 @@ public class RepositoryManager {
             types.add(subject.replace(GETHERE_URL, ""));
         }
         return types;
+    }
+
+    public boolean checkIfTypeExists(String type) {
+        List<String> types = getTypes();
+        return types.contains(type);
     }
 
     public List<Poi> getKeywordPois(String keyword) {

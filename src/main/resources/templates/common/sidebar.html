@@ -5,15 +5,17 @@
     <ul class="nav nav-pills nav-stacked">
         <div sec:authorize="hasRole('ROLE_ADMIN')">
             <h5 class="page-header lead">&emsp;Admin Panel</h5>
-            <li><a href="/profile/userInfo.html" th:href="@{/admin/profile.html}">Profile</a></li>
-            <li><a href="/admin/addAttribute.html" th:href="@{/admin/addAttribute.html}">Add Attribute</a></li>
-            <li><a href="/admin/addType.html" th:href="@{/admin/addType.html}">Add Type</a></li>
-            <li><a href="/admin/triples.html" th:href="@{/admin/triples.html}">Triples Overview</a></li>
+            <li><a href="/profile/userInfo.html" th:href="@{/profile/userInfo.html}">Profile</a></li>
+            <li><a href="/admin/attributeOverview.html" th:href="@{/admin/attribute/attributesOverview.html}">Attributes Overview</a></li>
+            <li><a href="/admin/addAttribute.html" th:href="@{/admin/attribute/addAttribute.html}">Add Attribute</a></li>
+            <li><a href="/admin/typesOverview.html" th:href="@{/admin/type/typesOverview.html}">Types Overview</a></li>
+            <li><a href="/admin/addType.html" th:href="@{/admin/type/addType.html}">Add Type</a></li>
+            <li><a href="/admin/triples.html" th:href="@{/triples.html}">Triples Overview</a></li>
         </div>
         <div sec:authorize="hasRole('ROLE_USER')">
             <h5 class="page-header lead">&emsp;Admin Panel</h5>
-            <li><a href="/profile/userInfo.html" th:href="@{/user/profile.html}">Profile</a></li>
-            <li><a href="/user/triples.html" th:href="@{/user/triples.html}">Triples Overview</a></li>
+            <li><a href="/profile/userInfo.html" th:href="@{/profile/userInfo.html}">Profile</a></li>
+            <li><a href="/user/triples.html" th:href="@{/triples.html}">Triples Overview</a></li>
         </div>
         <li class="divider"></li>
         <br/>

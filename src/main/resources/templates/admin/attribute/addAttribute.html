@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:substituteby="common/head"></head>
+
+<body>
+<header th:substituteby="common/header"></header>
+<br/><br/><br/>
+<div class="container-fluid">
+    <div class="row row-offcanvas row-offcanvas-left">
+        <div th:substituteby="common/sidebar"></div>
+        <div class="col-sm-9 col-md-10 main">
+            <form action="#" th:action="@{/addAttribute.html}" th:object="${String}" method="post" class="form-signout form-horizontal">
+                <div th:if="${addAttributeError}" class="alert alert-danger">
+                    This attribute definition currently exists!.<br/>
+                </div>
+                <div class="row ">
+                    <div class="col-md-10">
+                        <div class="page-header">
+                            <h3>Add Attribute Definition</h3>
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <label th:for="login">Attribute Name:</label>
+                                <input class="form-control" type="text" th:field="*{attribute}" name="attribute" placeholder="Enter a attribute definition"/>
+                                <p th:if="${#fields.hasErrors('attribute')}" th:errors="*{attribute}" style="color: #ff0000">Username error</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br/>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-lg btn-success">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer th:substituteby="common/footer"></footer>
+</div>
+</body>
+</html>
