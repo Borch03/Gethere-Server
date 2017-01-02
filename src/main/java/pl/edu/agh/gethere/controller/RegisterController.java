@@ -1,5 +1,6 @@
 package pl.edu.agh.gethere.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +19,9 @@ import javax.validation.Valid;
 @RequestMapping("/register")
 public class RegisterController {
 
+    @Autowired
+    RepositoryManager repositoryManager;
+
     @RequestMapping(method = RequestMethod.GET)
     public String displayRegisterForm(Model model) {
         model.addAttribute("user", new User());
@@ -26,7 +30,6 @@ public class RegisterController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String addUserFromRegisterForm(@Valid User user, BindingResult result, Model model) {
-        RepositoryManager repositoryManager = new RepositoryManager();
         if (result.hasErrors()) {
             return "register";
         } else if (repositoryManager.checkIfUserExists(user.getUsername())) {

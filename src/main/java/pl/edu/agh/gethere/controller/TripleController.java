@@ -1,6 +1,7 @@
 package pl.edu.agh.gethere.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,10 +23,11 @@ public class TripleController {
 
     final static Logger logger = Logger.getLogger(TripleController.class);
 
+    @Autowired
+    RepositoryManager repositoryManager;
+
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity addTriple(List<Triple> triples) {
-
-        RepositoryManager repositoryManager = new RepositoryManager();
         triples.forEach(repositoryManager::addStatement);
         repositoryManager.tearDown();
 
@@ -36,8 +38,6 @@ public class TripleController {
 
     @RequestMapping(method=RequestMethod.GET)
     public @ResponseBody List<Triple> getTriples() {
-
-        RepositoryManager repositoryManager = new RepositoryManager();
         List<Triple> triples = repositoryManager.getAllTriples();
         repositoryManager.tearDown();
 

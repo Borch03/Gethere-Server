@@ -1,6 +1,7 @@
 package pl.edu.agh.gethere.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,10 +22,11 @@ public class AttributeController {
 
     final static Logger logger = Logger.getLogger(AttributeController.class);
 
+    @Autowired
+    RepositoryManager repositoryManager;
+
     @RequestMapping(method= RequestMethod.POST)
     public ResponseEntity addAttributeDefinition(String definition) {
-
-        RepositoryManager repositoryManager = new RepositoryManager();
         repositoryManager.addAttributeDefinition(definition);
         repositoryManager.tearDown();
 
@@ -35,7 +37,6 @@ public class AttributeController {
 
     @RequestMapping(method= RequestMethod.GET)
     public @ResponseBody List<String> getAttributeDefinitions() {
-        RepositoryManager repositoryManager = new RepositoryManager();
         List<String> attributeDefinitions = repositoryManager.getAttributeDefinitions();
         repositoryManager.tearDown();
 

@@ -1,6 +1,7 @@
 package pl.edu.agh.gethere.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,11 +22,11 @@ public class TypeController {
 
     final static Logger logger = Logger.getLogger(TypeController.class);
 
+    @Autowired
+    RepositoryManager repositoryManager;
 
     @RequestMapping(method= RequestMethod.POST)
     public ResponseEntity addTypeOfPoi(String type) {
-
-        RepositoryManager repositoryManager = new RepositoryManager();
         repositoryManager.addTypeDefinition(type);
         repositoryManager.tearDown();
 
@@ -36,7 +37,6 @@ public class TypeController {
 
     @RequestMapping(method= RequestMethod.GET)
     public @ResponseBody List<String> getTypes() {
-        RepositoryManager repositoryManager = new RepositoryManager();
         List<String> types = repositoryManager.getTypes();
         repositoryManager.tearDown();
 
