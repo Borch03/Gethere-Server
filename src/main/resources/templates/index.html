@@ -1,32 +1,42 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="head"/>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-    <head>
-        <title>Thymeleafexamples - Spring Security</title>
-        <meta charset="utf-8" />
-        <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}" />
-    </head>
-    <body>
-        <div th:fragment="logout" class="logout"
-             sec:authorize="isAuthenticated()">
-            Logged user: <span sec:authentication="name">Bob</span> |
-            Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span> |
-            <!--/* When using CSRF this needs to be a POST */-->
-            <form th:action="@{/logout}" method="post" style="display:inline"><input type="submit" value="Logout"/></form>
+
+<head th:substituteby="common/head"></head>
+
+<body>
+<header th:substituteby="common/header"></header>
+<br/><br/><br/>
+<div class="container-fluid">
+    <div class="row row-offcanvas row-offcanvas-left">
+        <div th:substituteby="common/sidebar"></div>
+        <div class="col-sm-9 col-md-10 main">
+            <div class="row">
+                <div class="col-md-10" style="text-align: center">
+                    <div class="page-header">
+                        <h3>Welcome to GeThere home page!</h3>
+                    </div>
+                </div>
+            </div>
+            <br/><br/>
+            <div class="row">
+                <div class="col-md-2"/>
+                <div class="col-md-3" style="text-align: center">
+                    <form action="login.html">
+                        <button class="btn btn-default btn-lg btn-primary" type="submit">Log in</button>
+                    </form>
+                </div>
+                <div class="col-md-3" style="text-align: center">
+                    <form action="register.html">
+                        <button class="btn btn-default btn-lg btn-primary" type="submit">Sign up</button>
+                    </form>
+                </div>
+                <div class="col-md-4"/>
+            </div>
+            <br/>
+            <br/>
         </div>
-        <h1>Thymeleafexamples - Spring Security</h1>
-        <p>This is a demo of Thymeleaf and Spring-Security integration.</p>
-        <h2>Private pages</h2>
-        <p>This is a public page, but you can navigate to protected pages to trigger authentication.</p>
-        <ul>
-            <li>Go to <a href="admin/index.html" th:href="@{/admin/index.html}">administration zone</a> (only admins)</li>
-            <li>Go to <a href="user/index.html" th:href="@{/user/index.html}">user zone</a> (only users)</li>
-            <li>Go to <a href="user/index.html" th:href="@{/shared/index.html}">shared zone</a> (both users and admins)</li>
-        </ul>
-        <h2>Exception handling</h2>
-        <ul>
-            <li>You can <a href="error.html" th:href="@{/simulateError.html}">simulate an exception</a> to see custom ErrorPage.</li>
-        </ul>
-    </body>
+    </div>
+    <footer th:substituteby="common/footer"></footer>
+</div>
+</body>
 </html>

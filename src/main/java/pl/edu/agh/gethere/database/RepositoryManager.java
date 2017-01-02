@@ -15,6 +15,7 @@ import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.http.HTTPRepository;
 import pl.edu.agh.gethere.model.Poi;
 import pl.edu.agh.gethere.model.Triple;
+import pl.edu.agh.gethere.model.User;
 import pl.edu.agh.gethere.util.TupleParser;
 
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class RepositoryManager {
     }
 
     public void addAttributeDefinition(String definition) {
-        String subject = GETHERE_URL + "attribute";
+        String subject = GETHERE_URL + "Attribute";
         String predicate = GETHERE_URL + "hasValue";
         Triple attributeDefinition = new Triple(subject, predicate, definition);
         addStatement(attributeDefinition);
@@ -162,6 +163,41 @@ public class RepositoryManager {
             }
         }
         return pois;
+    }
+
+    public void addUser(User user) {
+        String userSubject = GETHERE_URL + "user";
+        String userPredicate = GETHERE_URL + "hasUserId";
+        String userIdIri = GETHERE_URL + user.getId();
+        Triple userTriple = new Triple(userSubject, userPredicate, userIdIri);
+        addStatement(userTriple);
+        String namePredicate = GETHERE_URL + "hasName";
+        Triple usernameTriple = new Triple(userIdIri, namePredicate, user.getUsername());
+        addStatement(usernameTriple);
+        String passwordPredicate = GETHERE_URL + "hasPassword";
+        Triple passwordTriple = new Triple(userIdIri, passwordPredicate, user.getPassword());
+        addStatement(passwordTriple);
+        String emailPredicate = GETHERE_URL + "hasEmail";
+        Triple emailTriple = new Triple(userIdIri, emailPredicate, user.getEmail());
+        addStatement(emailTriple);
+        String rolePredicate = GETHERE_URL + "hasRole";
+        Triple roleTriple = new Triple(userIdIri, rolePredicate, user.getRole().toString());
+        addStatement(roleTriple);
+    }
+
+    public boolean checkIfUserExists(String username) {
+        StringBuilder usernameQuery = new StringBuilder();
+        usernameQuery.append("PREFIX gethere: <" + GETHERE_URL + "> \n");
+        usernameQuery.append("SELECT ?s ?p ?o WHERE { \n");
+        usernameQuery.append("gethere:user gethere:hasUserId ?s . \n");
+        usernameQuery.append("?s gethere:hasName ?o .FILTER regex(str(?o), \"" + username + "\") . }");
+        TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, usernameQuery.toString());
+        TupleQueryResult result = tupleQuery.evaluate();
+        if (result.hasNext()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Repository getRepository() {

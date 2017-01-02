@@ -1,0 +1,15 @@
+<html>
+<body>
+<h1>Confirmation</h1>
+
+<h3>Hi ${user.getUsername()}, welcome to the GeThere!</h3>
+
+<div>
+    To confirm changing your e-mail address, please click the link below.
+    <br/>
+    <br/>
+    <a href="http://localhost:9000/emailChangeConfirm?token=${token}">EMAIL CHANGE CONFIRMATION</a>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:substituteby="common/head"></head>
+
+<body>
+<header th:substituteby="common/header"></header>
+<br/><br/><br/>
+<div class="container-fluid">
+    <div class="row row-offcanvas row-offcanvas-left">
+        <div th:substituteby="common/sidebar"></div>
+        <div class="col-sm-9 col-md-10 main">
+            <script>
+                window.onload = function () {
+                    document.f.j_username.focus();
+                }
+            </script>
+            <form action="#" th:action="@{/register.html}" th:object="${user}" method="post" class="form-signout form-horizontal">
+                <div th:if="${addUserError}" class="alert alert-danger">
+                    This login currently exists! Choose another one.<br/>
+                </div>
+                <div class="row ">
+                    <div class="col-md-10">
+                        <div class="page-header">
+                            <h3>Sign up</h3>
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <label th:for="login">Login:</label>
+                                <input class="form-control" type="text" th:field="*{username}" name="username" placeholder="Pick a login"/>
+                                <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: #ff0000">Username error</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <label th:for="password">Password:</label>
+                                <input path="password" class="form-control" type="password" th:field="*{password}" name="password" placeholder="Create a password"/>
+                                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: #ff0000">Password error</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <label th:for="email">Email:</label>
+                                <input path="email" class="form-control" type="email" th:field="*{email}" name="email" placeholder="Enter your Email"/>
+                                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: #ff0000">Email error</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br/>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-lg btn-success">
+                                    Register
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer th:substituteby="common/footer"></footer>
+</div>
+</body>
+</html>

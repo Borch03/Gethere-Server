@@ -7,7 +7,7 @@
         <div sec:authorize="isAuthenticated()">
             <h5 class="page-header lead">&emsp;Admin Panel</h5>
             <li><a href="/admin/profile.html" th:href="@{/profile.html}">Profile</a></li>
-            <li><a href="/admin/profile/edit.html" th:href="@{/profile/edit.html}">Edit Info</a></li>
+            <li><a href="/admin/profile/edit.html" th:href="@{/admin/profile/edit.html}">Edit Info</a></li>
             <li><a href="/admin/addAttribute.html" th:href="@{/admin/addAttribute.html}">Add Attribute</a></li>
             <li><a href="/admin/addType.html" th:href="@{/admin/addType.html}">Add Type</a></li>
             <li><a href="/admin/triples.html" th:href="@{/admin/triples.html}">Triples Overview</a></li>
@@ -17,9 +17,11 @@
         <br/>
         <li class="active">
             <div sec:authorize="isAuthenticated()">
-                <button class="btn btn-primary active" type="submit" th:action="@{/logout}" method="post" style="display:inline">
-                    Log out
-                </button>
+                <form th:action="@{/logout.html}" method="post">
+                    <button class="btn btn-primary active" type="submit" value="Logout" style="display:inline">
+                        Log out
+                    </button>
+                </form>
             </div>
             <div sec:authorize="isAnonymous()">
                 <a href="/login.html" th:href="@{/login.html}" class="btn btn-md btn-default btn-block">Log in</a>

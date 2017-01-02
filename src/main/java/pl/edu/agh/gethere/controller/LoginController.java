@@ -1,12 +1,17 @@
 package pl.edu.agh.gethere.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.thymeleaf.extras.springsecurity4.auth.Authorization;
 import org.unbescape.html.HtmlEscape;
+import pl.edu.agh.gethere.model.UserRole;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.Locale;
 
 /**
@@ -19,11 +24,20 @@ public class LoginController {
 
     @RequestMapping(value = {"/"}, method=RequestMethod.GET)
     public String root(Locale locale) {
-        return "redirect:/index.html";
+        return "redirect:/index";
     }
 
     @RequestMapping(value = {"/index"}, method=RequestMethod.GET)
-    public String index() {
+    public String index(Authentication authentication) {
+        if (authentication != null) {
+            for (GrantedAuthority auth : authentication.getAuthorities()) {
+                if (auth.getAuthority().equals(UserRole.ROLE_ADMIN.toString())) {
+                    return "redirect:/admin/index";
+                } else if (auth.getAuthority().equals(UserRole.ROLE_USER.toString())) {
+                    return "redirect:/user/index";
+                }
+            }
+        }
         return "index";
     }
 
@@ -37,11 +51,6 @@ public class LoginController {
         return "admin/index";
     }
 
-    @RequestMapping(value = {"/shared/index"}, method=RequestMethod.GET)
-    public String sharedIndex() {
-        return "shared/index";
-    }
-
     @RequestMapping(value = {"/login"}, method=RequestMethod.GET)
     public String login() {
         return "login";
@@ -51,11 +60,6 @@ public class LoginController {
     public String loginError(Model model) {
         model.addAttribute("loginError", true);
         return "login";
-    }
-
-    @RequestMapping(value = {"/simulateError"}, method=RequestMethod.GET)
-    public void simulateError() {
-        throw new RuntimeException("This is a simulated error message");
     }
 
     @RequestMapping(value = {"/error"}, method=RequestMethod.GET)

@@ -1,15 +1,27 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>Thymeleafexamples - Spring Security</title>
-        <meta charset="utf-8" />
-        <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}" />
-    </head>
-    <body>
-        <div th:replace="index::logout"></div>
-        <h1>Thymeleafexamples - Spring Security</h1>
-        <p>This is the <b>administration</b> zone</p>
-        <p>Only authenticated users with role <b>ADMIN</b> are allowed to see this page.</p>
-        <p><a href="../index.html" th:href="@{/index.html}">Back to home page</a></p>
-    </body>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:substituteby="common/head"></head>
+
+<body>
+<header th:substituteby="common/header"></header>
+<br/><br/><br/>
+<div class="container-fluid">
+    <div class="row row-offcanvas row-offcanvas-left">
+        <div th:substituteby="common/sidebar"></div>
+        <div class="col-sm-9 col-md-10 main">
+            <div class="row">
+                <div class="col-md-10" style="text-align: center">
+                    <div class="page-header">
+                        <h3>Hi <a sec:authentication="name"/>! Welcome to GeThere home page!</h3>
+                    </div>
+                </div>
+            </div>
+            <br/><br/>
+        </div>
+    </div>
+    <footer th:substituteby="common/footer"></footer>
+</div>
+</body>
 </html>
