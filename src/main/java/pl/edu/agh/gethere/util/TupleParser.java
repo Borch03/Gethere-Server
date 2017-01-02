@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 import org.openrdf.query.BindingSet;
 import org.openrdf.query.TupleQueryResult;
 import pl.edu.agh.gethere.model.Poi;
+import pl.edu.agh.gethere.model.User;
+import pl.edu.agh.gethere.model.UserRole;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +20,8 @@ public class TupleParser {
     public final static String TYPE_PREDICATE = "isTypeOf";
     public final static String NAME_PREDICATE = "hasName";
     public final static String COORDINATES_PREDICATE = "hasCoordinates";
+    public final static String EMAIL_PREDICATE = "hasEmail";
+    public final static String ROLE_PREDICATE = "hasRole";
 
     final static Logger logger = Logger.getLogger(TupleParser.class);
 
@@ -53,5 +57,30 @@ public class TupleParser {
         }
         poi.setAttributes(attributes);
         return ((poi.getName() != null) && (poi.getType() != null) && (poi.getCoordinates() != null)) ? poi : null;
+    }
+
+    public User parseUser(TupleQueryResult result, String id) {
+        User user = new User();
+        user.setId(id);
+        while (result.hasNext()) {
+            BindingSet bindingSet = result.next();
+            String predicate = bindingSet.getValue("p").stringValue().replace(GETHERE_URL, "");
+            String object = bindingSet.getValue("o").stringValue();
+            if (predicate.equals(NAME_PREDICATE)) {
+                user.setUsername(object);
+            } else if (predicate.equals(EMAIL_PREDICATE)) {
+                user.setEmail(object);
+            } else if (predicate.equals(ROLE_PREDICATE)) {
+                if (object.equals(UserRole.ROLE_ADMIN.toString())) {
+                    user.setRole(UserRole.ROLE_ADMIN);
+                } else if (object.equals(UserRole.ROLE_USER.toString())) {
+                    user.setRole(UserRole.ROLE_USER);
+                }
+            } else {
+                logger.warn("Unrecognized User parameter: " + predicate);
+            }
+        }
+        return ((user.getUsername() != null) && (user.getEmail() != null) && (user.getRole() != null)) ? user : null;
+
     }
 }

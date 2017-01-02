@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pl.edu.agh.gethere.database.RepositoryManager;
 import pl.edu.agh.gethere.model.User;
+import pl.edu.agh.gethere.model.UserRole;
 
 import javax.validation.Valid;
 
@@ -24,7 +25,7 @@ public class RegisterController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String displayRegisterForm(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new User(UserRole.ROLE_ADMIN));
         return "register";
     }
 

@@ -5,16 +5,14 @@
     <ul class="nav nav-pills nav-stacked">
         <div sec:authorize="hasRole('ROLE_ADMIN')">
             <h5 class="page-header lead">&emsp;Admin Panel</h5>
-            <li><a href="/admin/profile.html" th:href="@{/admin/profile.html}">Profile</a></li>
-            <li><a href="/admin/profile/editInfo.html" th:href="@{/admin/editInfo.html}">Edit Info</a></li>
+            <li><a href="/profile/userInfo.html" th:href="@{/admin/profile.html}">Profile</a></li>
             <li><a href="/admin/addAttribute.html" th:href="@{/admin/addAttribute.html}">Add Attribute</a></li>
             <li><a href="/admin/addType.html" th:href="@{/admin/addType.html}">Add Type</a></li>
             <li><a href="/admin/triples.html" th:href="@{/admin/triples.html}">Triples Overview</a></li>
         </div>
         <div sec:authorize="hasRole('ROLE_USER')">
             <h5 class="page-header lead">&emsp;Admin Panel</h5>
-            <li><a href="/user/profile.html" th:href="@{/user/profile.html}">Profile</a></li>
-            <li><a href="/user/profile/editInfo.html" th:href="@{/user/editInfo.html}">Edit Info</a></li>
+            <li><a href="/profile/userInfo.html" th:href="@{/user/profile.html}">Profile</a></li>
             <li><a href="/user/triples.html" th:href="@{/user/triples.html}">Triples Overview</a></li>
         </div>
         <li class="divider"></li>

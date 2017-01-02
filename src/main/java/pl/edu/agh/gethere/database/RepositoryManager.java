@@ -186,7 +186,7 @@ public class RepositoryManager {
     public boolean checkIfUserExists(String username) {
         StringBuilder usernameQuery = new StringBuilder();
         usernameQuery.append("PREFIX gethere: <" + GETHERE_URL + "> \n");
-        usernameQuery.append("SELECT ?s ?p ?o WHERE { \n");
+        usernameQuery.append("SELECT ?id ?p ?o WHERE { \n");
         usernameQuery.append("?id gethere:isTypeOf gethere:User . \n");
         usernameQuery.append("?id gethere:hasName ?o .FILTER regex(str(?o), \"" + username + "\") . }");
         TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, usernameQuery.toString());
@@ -204,6 +204,31 @@ public class RepositoryManager {
         TupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, authQuery.toString());
         TupleQueryResult result = tupleQuery.evaluate();
         return result.hasNext();
+    }
+
+    public User getUserByName(String username) {
+        if (username == null) {
+            return null;
+        }
+        StringBuilder userIdQuery = new StringBuilder();
+        userIdQuery.append("PREFIX gethere: <" + GETHERE_URL + "> \n");
+        userIdQuery.append("SELECT ?s ?p ?o WHERE { \n");
+        userIdQuery.append("?id gethere:isTypeOf gethere:User . \n");
+        userIdQuery.append("?id gethere:hasName ?o .FILTER regex(str(?o), \"" + username + "\") . }");
+        TupleQuery tupleUserIdQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, userIdQuery.toString());
+        TupleQueryResult result = tupleUserIdQuery.evaluate();
+        BindingSet bindingSet = result.next();
+        String userId = bindingSet.getValue("id").stringValue();
+
+        StringBuilder userQuery = new StringBuilder();
+        userQuery.append("SELECT ?s ?p ?o WHERE { \n");
+        userQuery.append("<" + userId + "> ?p ?o . \n");
+        userQuery.append("?s ?p ?o .FILTER regex(str(?p), \"^" + GETHERE_URL + "\") . }");
+        TupleQuery tupleUserQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, userQuery.toString());
+        TupleQueryResult userResult = tupleUserQuery.evaluate();
+        String id = userId.replace(GETHERE_URL, "");
+        TupleParser tupleParser = new TupleParser();
+        return tupleParser.parseUser(userResult, id);
     }
 
     public Repository getRepository() {
