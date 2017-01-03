@@ -21,11 +21,9 @@ public class KeywordSearchController {
 
     final static Logger logger = Logger.getLogger(KeywordSearchController.class);
 
-    @Autowired
-    RepositoryManager repositoryManager;
-
     @RequestMapping(method= RequestMethod.POST)
     public @ResponseBody List<Poi> getKeywordResults(String keyword) {
+        RepositoryManager repositoryManager = new RepositoryManager();
         List<Poi> pois = repositoryManager.getKeywordPois(keyword);
         repositoryManager.tearDown();
 

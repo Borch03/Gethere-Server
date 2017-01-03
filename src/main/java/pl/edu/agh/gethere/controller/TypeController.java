@@ -24,12 +24,9 @@ public class TypeController {
 
     final static Logger logger = Logger.getLogger(TypeController.class);
 
-    @Autowired
-    RepositoryManager repositoryManager;
-
-
     @RequestMapping(value = {"/typesOverview"}, method= RequestMethod.GET)
     public String displayTypesOfLocation(Model model) {
+        RepositoryManager repositoryManager = new RepositoryManager();
         List<String> types = repositoryManager.getTypes();
         repositoryManager.tearDown();
         logger.info("Successfully got" + types.size() + "types of POI from Repository");
@@ -41,6 +38,7 @@ public class TypeController {
 
     @RequestMapping(value = {"/addType"}, method= RequestMethod.POST)
     public String addNewType(String type, BindingResult result, Model model) {
+        RepositoryManager repositoryManager = new RepositoryManager();
         if (result.hasErrors()) {
             return "/addType";
         } else if (repositoryManager.checkIfTypeExists(type)) {

@@ -18,12 +18,10 @@ import pl.edu.agh.gethere.model.User;
 @RequestMapping("/profile")
 public class ProfileController {
 
-    @Autowired
-    RepositoryManager repositoryManager;
-
     @RequestMapping(value = {"/userInfo"}, method = RequestMethod.GET)
     public String profile(Model model)
     {
+        RepositoryManager repositoryManager = new RepositoryManager();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         User user = repositoryManager.getUserByName(username);
@@ -33,7 +31,7 @@ public class ProfileController {
         }
         user.setPassword("");
         model.addAttribute("user", user);
-        return "userInfo";
+        return "profile/userInfo";
     }
 
 }

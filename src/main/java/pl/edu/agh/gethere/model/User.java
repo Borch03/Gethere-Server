@@ -12,11 +12,8 @@ import java.util.UUID;
 
 public class User {
 
-    public User() {}
-
-    public User(UserRole userRole) {
+    public User() {
         this.id = UUID.randomUUID().toString();
-        this.role = userRole;
     }
 
     private String id;

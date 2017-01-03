@@ -20,23 +20,22 @@ import javax.validation.Valid;
 @RequestMapping("/register")
 public class RegisterController {
 
-    @Autowired
-    RepositoryManager repositoryManager;
-
     @RequestMapping(method = RequestMethod.GET)
     public String displayRegisterForm(Model model) {
-        model.addAttribute("user", new User(UserRole.ROLE_ADMIN));
+        model.addAttribute("user", new User());
         return "register";
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public String addUserFromRegisterForm(@Valid User user, BindingResult result, Model model) {
+        RepositoryManager repositoryManager = new RepositoryManager();
         if (result.hasErrors()) {
             return "register";
         } else if (repositoryManager.checkIfUserExists(user.getUsername())) {
             model.addAttribute("addUserError", "true");
             return "register";
         }
+        user.setRole(UserRole.ROLE_ADMIN);
         repositoryManager.addUser(user);
         return "redirect:/";
     }

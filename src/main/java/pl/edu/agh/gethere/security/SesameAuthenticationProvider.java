@@ -7,8 +7,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.gethere.database.RepositoryManager;
+import pl.edu.agh.gethere.model.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by SG0222581 on 1/2/2017.
@@ -17,17 +19,22 @@ import java.util.ArrayList;
 @Component
 public class SesameAuthenticationProvider implements AuthenticationProvider {
 
-    @Autowired
-    RepositoryManager repositoryManager;
-
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
 
+        RepositoryManager repositoryManager = new RepositoryManager();
         if (repositoryManager.isUserAuthenticated(name, password)) {
-            return new UsernamePasswordAuthenticationToken(name, password, new ArrayList<>());
+            List<UserAuthority> authorities = new ArrayList<>();
+            User user = repositoryManager.getUserByName(name);
+            if (user != null) {
+                authorities.add(new UserAuthority(user.getRole()));
+            }
+            repositoryManager.tearDown();
+            return new UsernamePasswordAuthenticationToken(name, password, authorities);
         } else {
+            repositoryManager.tearDown();
             return null;
         }
     }

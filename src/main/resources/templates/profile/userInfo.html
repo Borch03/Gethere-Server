@@ -23,8 +23,8 @@
                                 <strong sec:authentication="name">Username</strong>
                             </div>
                             <div class="panel-body">
-                                <p class="lead"><b>Email:</b> ${user.email}  </b>
-                                <p class="lead"><b>Role:</b>  ${user.userRole} </p>
+                                <p class="lead"><b>Email:</b> <td th:text="${user.email}">email</td> </p>
+                                <p class="lead"><b>Role:</b>  <td th:text="${user.role}">role</td> </p>
                             </div>
                         </div>
                     </div>

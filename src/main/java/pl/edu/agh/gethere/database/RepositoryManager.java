@@ -222,7 +222,7 @@ public class RepositoryManager {
         }
         StringBuilder userIdQuery = new StringBuilder();
         userIdQuery.append("PREFIX gethere: <" + GETHERE_URL + "> \n");
-        userIdQuery.append("SELECT ?s ?p ?o WHERE { \n");
+        userIdQuery.append("SELECT ?id ?p ?o WHERE { \n");
         userIdQuery.append("?id gethere:isTypeOf gethere:User . \n");
         userIdQuery.append("?id gethere:hasName ?o .FILTER regex(str(?o), \"" + username + "\") . }");
         TupleQuery tupleUserIdQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, userIdQuery.toString());

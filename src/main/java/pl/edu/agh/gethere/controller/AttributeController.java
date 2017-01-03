@@ -24,11 +24,9 @@ public class AttributeController {
 
     final static Logger logger = Logger.getLogger(AttributeController.class);
 
-    @Autowired
-    RepositoryManager repositoryManager;
-
     @RequestMapping(value = {"/attributesOverview"}, method= RequestMethod.GET)
     public String displayAttributeDefinitions(Model model) {
+        RepositoryManager repositoryManager = new RepositoryManager();
         List<String> attributeDefinitions = repositoryManager.getAttributeDefinitions();
         repositoryManager.tearDown();
         logger.info("Successfully got " + attributeDefinitions.size() + " POI attribute definitions from Repository");
@@ -40,6 +38,7 @@ public class AttributeController {
 
     @RequestMapping(value = {"/addAttribute"}, method= RequestMethod.POST)
     public String addAttributeDefinition(String definition, BindingResult result, Model model) {
+        RepositoryManager repositoryManager = new RepositoryManager();
         if (result.hasErrors()) {
             return "/addAttribute";
         } else if (repositoryManager.checkIfAttributeExists(definition)) {
