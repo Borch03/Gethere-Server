@@ -12,6 +12,9 @@
             <div class="col-sm-9 col-md-10 main">
                 <div class="row">
                     <div class="col-md-10">
+                        <div th:if="${addUserSuccess}" class="alert alert-success">
+                            User has been registered successfully.<br/>
+                        </div>
                         <div th:if="${loginError}" class="alert alert-danger">
                             Your login attempt was not successful, try again.<br/>
                         </div>

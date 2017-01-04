@@ -10,7 +10,7 @@
     <div class="row row-offcanvas row-offcanvas-left">
         <div th:substituteby="common/sidebar"></div>
         <div class="col-sm-9 col-md-10 main">
-            <form action="#" th:action="@{/addAttribute.html}" th:object="${String}" method="post" class="form-signout form-horizontal">
+            <div class="form-signout form-horizontal">
                 <div th:if="${addAttributeError}" class="alert alert-danger">
                     This attribute definition currently exists!.<br/>
                 </div>
@@ -20,24 +20,25 @@
                             <h3>Add Attribute Definition</h3>
                         </div>
                         <br/>
-                        <div class="form-group">
-                            <div class="col-md-5">
-                                <label th:for="login">Attribute Name:</label>
-                                <input class="form-control" type="text" th:field="*{attribute}" name="attribute" placeholder="Enter a attribute definition"/>
-                                <p th:if="${#fields.hasErrors('attribute')}" th:errors="*{attribute}" style="color: #ff0000">Username error</p>
+                        <form th:action="@{/admin/attribute/addAttribute.html}" method="post">
+                            <div class="form-group">
+                                <div class="col-md-5">
+                                    <label th:for="login" style="font-size: 150%">Attribute Name:</label>
+                                    <input class="form-control" type="text" id="attribute" name="attribute" placeholder="Enter a attribute definition"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <br/>
-                            <div class="col-md-4">
-                                <button type="submit" class="btn btn-lg btn-success">
-                                    Add
-                                </button>
+                            <div class="row">
+                                <br/>
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-lg btn-success">
+                                        Add
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
     <footer th:substituteby="common/footer"></footer>

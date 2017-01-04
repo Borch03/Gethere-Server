@@ -118,7 +118,7 @@ public class RepositoryManager {
         List<String> attributeDefinitions = new ArrayList<>();
         while (result.hasNext()) {
             BindingSet bindingSet = result.next();
-            String object = bindingSet.getValue("o").stringValue();
+            String object = bindingSet.getValue("s").stringValue();
             attributeDefinitions.add(object);
         }
         return attributeDefinitions;

@@ -18,12 +18,16 @@
     <div class="row row-offcanvas row-offcanvas-left">
         <div th:substituteby="common/sidebar"></div>
         <div class="col-sm-9 col-md-10 main">
+            <div th:if="${addAttributeSuccess}" class="alert alert-success">
+                Attribute Definition has been added successfully.<br/>
+            </div>
             <h3 class="page-header">Attribute Definitions</h3>
             <div th:if="attributes!=null">
                 <div class="table-responsive">
                     <table class="table table-striped">
-                        <p th:each="attribute : ${attributes}"
-                           th:text="${attribute}">Attribute Name</p>
+                        <tr th:each="attribute : ${attributes}">
+                           <td th:text="${attribute}" style="font-size: 125%">Attribute Name</td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -31,6 +35,9 @@
                 <p class="well">No attribute definitions found.</p>
             </div>
             <br/><br/>
+            <form action="addAttribute.html">
+                <button class="btn btn-default btn-lg btn-primary" type="submit">Add new Attribute</button>
+            </form>
         </div>
     </div>
     <footer th:substituteby="common/footer"></footer>

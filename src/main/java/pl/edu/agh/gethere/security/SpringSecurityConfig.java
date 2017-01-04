@@ -54,7 +54,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/profile/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/shared/**").hasAnyRole("ADMIN", "USER")
             .and()
                 .exceptionHandling()
                 .accessDeniedPage("/403.html");

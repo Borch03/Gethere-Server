@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:substituteby="common/head"></head>
+
+<body>
+<style>
+    #map-canvas {
+        height: 300px;
+        width: 400px;
+        padding: 0px;
+        margin: 0px;
+    }
+</style>
+<header th:substituteby="common/header"></header>
+<br/><br/><br/>
+<div class="container-fluid">
+    <div class="row row-offcanvas row-offcanvas-left">
+        <div th:substituteby="common/sidebar"></div>
+        <div class="col-sm-9 col-md-10 main">
+            <h3 class="page-header">Triples</h3>
+            <div th:if="triples!=null">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tr>
+                            <td style="font-size: 125%"><b>Subject</b></td>
+                            <td style="font-size: 125%"><b>Predicate</b></td>
+                            <td style="font-size: 125%"><b>Object</b></td>
+                        </tr>
+                        <tr th:each="triple : ${triples}">
+                            <td th:text="${triple.subject}" style="font-size: 125%">Triple Subject</td>
+                            <td th:text="${triple.predicate}" style="font-size: 125%">Triple Predicate</td>
+                            <td th:text="${triple.object}" style="font-size: 125%">Triple Object</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div th:if="triples==null">
+                <p class="well">No triples found.</p>
+            </div>
+            <br/><br/>
+        </div>
+    </div>
+    <footer th:substituteby="common/footer"></footer>
+</div>
+</body>
+</html>

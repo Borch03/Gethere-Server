@@ -10,6 +10,9 @@
     <div class="row row-offcanvas row-offcanvas-left">
         <div th:substituteby="common/sidebar"></div>
         <div class="col-sm-9 col-md-10 main">
+            <div th:if="${logout}" class="alert alert-success">
+                Successfully logged out.
+            </div>
             <div class="row">
                 <div class="col-md-10" style="text-align: center">
                     <div class="page-header">

@@ -18,12 +18,16 @@
     <div class="row row-offcanvas row-offcanvas-left">
         <div th:substituteby="common/sidebar"></div>
         <div class="col-sm-9 col-md-10 main">
+            <div th:if="${addTypeSuccess}" class="alert alert-success">
+                Type has been added successfully.<br/>
+            </div>
             <h3 class="page-header">Types of Location</h3>
             <div th:if="attributes!=null">
                 <div class="table-responsive">
                     <table class="table table-striped">
-                        <p th:each="type : ${types}"
-                           th:text="${type}">Type Name</p>
+                        <tr th:each="type : ${types}">
+                            <td th:text="${type}" style="font-size: 125%">Type Name</td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -31,6 +35,9 @@
                 <p class="well">No type definitions found.</p>
             </div>
             <br/><br/>
+            <form action="addType.html">
+                <button class="btn btn-default btn-lg btn-primary" type="submit">Add new Type</button>
+            </form>
         </div>
     </div>
     <footer th:substituteby="common/footer"></footer>

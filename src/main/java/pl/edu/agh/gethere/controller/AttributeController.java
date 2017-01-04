@@ -30,26 +30,30 @@ public class AttributeController {
         List<String> attributeDefinitions = repositoryManager.getAttributeDefinitions();
         repositoryManager.tearDown();
         logger.info("Successfully got " + attributeDefinitions.size() + " POI attribute definitions from Repository");
-
         model.addAttribute("attributes", attributeDefinitions);
 
-        return "/attributesOverview";
+        return "/admin/attribute/attributesOverview";
+    }
+
+    @RequestMapping(value = {"/addAttribute"}, method= RequestMethod.GET)
+    public String addAttributeDefinition(Model model) {
+        model.addAttribute("attribute", new String());
+        return "/admin/attribute/addAttribute";
     }
 
     @RequestMapping(value = {"/addAttribute"}, method= RequestMethod.POST)
-    public String addAttributeDefinition(String definition, BindingResult result, Model model) {
+    public String addAttributeDefinition(String attribute, Model model) {
         RepositoryManager repositoryManager = new RepositoryManager();
-        if (result.hasErrors()) {
-            return "/addAttribute";
-        } else if (repositoryManager.checkIfAttributeExists(definition)) {
+        if (repositoryManager.checkIfAttributeExists(attribute)) {
             model.addAttribute("addAttributeError", "true");
-            return "/addAttribute";
+            return "/admin/attribute/addAttribute";
         }
-        repositoryManager.addAttributeDefinition(definition);
+        repositoryManager.addAttributeDefinition(attribute);
         repositoryManager.tearDown();
-        logger.info("Successfully added " + definition + " info definition to Repository");
+        logger.info("Successfully added " + attribute + " info definition to Repository");
+        model.addAttribute("addAttributeSuccess", "true");
 
-        return "redirect:/attributeOverview";
+        return "/admin/attribute/attributesOverview";
     }
 
 

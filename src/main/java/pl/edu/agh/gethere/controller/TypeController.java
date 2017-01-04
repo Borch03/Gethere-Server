@@ -33,22 +33,27 @@ public class TypeController {
 
         model.addAttribute("types", types);
 
-        return "/typesOverview";
+        return "/admin/type/typesOverview";
+    }
+
+    @RequestMapping(value = {"/addType"}, method= RequestMethod.GET)
+    public String addNewType(Model model) {
+        model.addAttribute("type", new String());
+        return "/admin/type/addType";
     }
 
     @RequestMapping(value = {"/addType"}, method= RequestMethod.POST)
-    public String addNewType(String type, BindingResult result, Model model) {
+    public String addNewType(String type, Model model) {
         RepositoryManager repositoryManager = new RepositoryManager();
-        if (result.hasErrors()) {
-            return "/addType";
-        } else if (repositoryManager.checkIfTypeExists(type)) {
+        if (repositoryManager.checkIfTypeExists(type)) {
             model.addAttribute("addTypeError", "true");
-            return "/addType";
+            return "/admin/type/addType";
         }
         repositoryManager.addTypeDefinition(type);
         repositoryManager.tearDown();
         logger.info("Successfully added " + type + " type of POI to Repository");
+        model.addAttribute("addTypeSuccess", "true");
 
-        return "redirect:/typeOverview";
+        return "/admin/type/typesOverview";
     }
 }

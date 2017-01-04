@@ -37,6 +37,7 @@ public class RegisterController {
         }
         user.setRole(UserRole.ROLE_ADMIN);
         repositoryManager.addUser(user);
-        return "redirect:/";
+        model.addAttribute("addUserSuccess", "true");
+        return "/login";
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,12 +19,24 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("/triple")
+@RequestMapping("/shared/triple")
 public class TripleController {
 
     final static Logger logger = Logger.getLogger(TripleController.class);
 
-    @RequestMapping(method=RequestMethod.POST)
+    @RequestMapping(value = {"/triplesOverview"}, method=RequestMethod.GET)
+    public String displayTriples(Model model) {
+        RepositoryManager repositoryManager = new RepositoryManager();
+        List<Triple> triples = repositoryManager.getAllTriples();
+        repositoryManager.tearDown();
+
+        logger.info("Successfully got all triples from Repository");
+        model.addAttribute("triples", triples);
+
+        return "/shared/triple/triplesOverview";
+    }
+
+    @RequestMapping(value = {"/addTriple"}, method=RequestMethod.POST)
     public ResponseEntity addTriple(List<Triple> triples) {
         RepositoryManager repositoryManager = new RepositoryManager();
         triples.forEach(repositoryManager::addStatement);
@@ -32,16 +45,5 @@ public class TripleController {
         logger.info("Successfully added triples to Repository");
 
         return new ResponseEntity<String>(HttpStatus.CREATED);
-    }
-
-    @RequestMapping(method=RequestMethod.GET)
-    public @ResponseBody List<Triple> getTriples() {
-        RepositoryManager repositoryManager = new RepositoryManager();
-        List<Triple> triples = repositoryManager.getAllTriples();
-        repositoryManager.tearDown();
-
-        logger.info("Successfully got all triples from Repository");
-
-        return triples;
     }
 }

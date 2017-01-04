@@ -15,7 +15,7 @@ import pl.edu.agh.gethere.model.User;
  */
 
 @Controller
-@RequestMapping("/profile")
+@RequestMapping("/shared/profile")
 public class ProfileController {
 
     @RequestMapping(value = {"/userInfo"}, method = RequestMethod.GET)
@@ -31,7 +31,7 @@ public class ProfileController {
         }
         user.setPassword("");
         model.addAttribute("user", user);
-        return "profile/userInfo";
+        return "/shared/profile/userInfo";
     }
 
 }
