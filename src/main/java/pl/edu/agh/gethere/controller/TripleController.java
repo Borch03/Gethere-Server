@@ -1,15 +1,13 @@
 package pl.edu.agh.gethere.controller;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import pl.edu.agh.gethere.database.RepositoryManager;
+import pl.edu.agh.gethere.database.TripleRepositoryManager;
 import pl.edu.agh.gethere.model.Triple;
 
 import java.util.List;
@@ -26,7 +24,7 @@ public class TripleController {
 
     @RequestMapping(value = {"/triplesOverview"}, method=RequestMethod.GET)
     public String displayTriples(Model model) {
-        RepositoryManager repositoryManager = new RepositoryManager();
+        TripleRepositoryManager repositoryManager = new TripleRepositoryManager();
         List<Triple> triples = repositoryManager.getAllTriples();
         repositoryManager.tearDown();
 
@@ -38,7 +36,7 @@ public class TripleController {
 
     @RequestMapping(value = {"/addTriple"}, method=RequestMethod.POST)
     public ResponseEntity addTriple(List<Triple> triples) {
-        RepositoryManager repositoryManager = new RepositoryManager();
+        TripleRepositoryManager repositoryManager = new TripleRepositoryManager();
         triples.forEach(repositoryManager::addStatement);
         repositoryManager.tearDown();
 

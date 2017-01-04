@@ -1,16 +1,11 @@
 package pl.edu.agh.gethere.controller;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import pl.edu.agh.gethere.database.RepositoryManager;
+import pl.edu.agh.gethere.database.AttributeRepositoryManager;
 
 import java.util.List;
 
@@ -26,7 +21,7 @@ public class AttributeController {
 
     @RequestMapping(value = {"/attributesOverview"}, method= RequestMethod.GET)
     public String displayAttributeDefinitions(Model model) {
-        RepositoryManager repositoryManager = new RepositoryManager();
+        AttributeRepositoryManager repositoryManager = new AttributeRepositoryManager();
         List<String> attributeDefinitions = repositoryManager.getAttributeDefinitions();
         repositoryManager.tearDown();
         logger.info("Successfully got " + attributeDefinitions.size() + " POI attribute definitions from Repository");
@@ -43,7 +38,7 @@ public class AttributeController {
 
     @RequestMapping(value = {"/addAttribute"}, method= RequestMethod.POST)
     public String addAttributeDefinition(String attribute, Model model) {
-        RepositoryManager repositoryManager = new RepositoryManager();
+        AttributeRepositoryManager repositoryManager = new AttributeRepositoryManager();
         if (repositoryManager.checkIfAttributeExists(attribute)) {
             model.addAttribute("addAttributeError", "true");
             return "/admin/attribute/addAttribute";

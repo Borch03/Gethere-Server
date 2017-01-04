@@ -1,16 +1,11 @@
 package pl.edu.agh.gethere.controller;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import pl.edu.agh.gethere.database.RepositoryManager;
+import pl.edu.agh.gethere.database.TypeRepositoryManager;
 
 import java.util.List;
 
@@ -26,7 +21,7 @@ public class TypeController {
 
     @RequestMapping(value = {"/typesOverview"}, method= RequestMethod.GET)
     public String displayTypesOfLocation(Model model) {
-        RepositoryManager repositoryManager = new RepositoryManager();
+        TypeRepositoryManager repositoryManager = new TypeRepositoryManager();
         List<String> types = repositoryManager.getTypes();
         repositoryManager.tearDown();
         logger.info("Successfully got" + types.size() + "types of POI from Repository");
@@ -44,7 +39,7 @@ public class TypeController {
 
     @RequestMapping(value = {"/addType"}, method= RequestMethod.POST)
     public String addNewType(String type, Model model) {
-        RepositoryManager repositoryManager = new RepositoryManager();
+        TypeRepositoryManager repositoryManager = new TypeRepositoryManager();
         if (repositoryManager.checkIfTypeExists(type)) {
             model.addAttribute("addTypeError", "true");
             return "/admin/type/addType";

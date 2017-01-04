@@ -1,12 +1,11 @@
 package pl.edu.agh.gethere.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import pl.edu.agh.gethere.database.RepositoryManager;
+import pl.edu.agh.gethere.database.UserRepositoryManager;
 import pl.edu.agh.gethere.model.User;
 import pl.edu.agh.gethere.model.UserRole;
 
@@ -28,7 +27,7 @@ public class RegisterController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String addUserFromRegisterForm(@Valid User user, BindingResult result, Model model) {
-        RepositoryManager repositoryManager = new RepositoryManager();
+        UserRepositoryManager repositoryManager = new UserRepositoryManager();
         if (result.hasErrors()) {
             return "register";
         } else if (repositoryManager.checkIfUserExists(user.getUsername())) {

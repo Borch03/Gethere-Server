@@ -6,12 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.thymeleaf.extras.springsecurity4.auth.Authorization;
 import org.unbescape.html.HtmlEscape;
 import pl.edu.agh.gethere.model.UserRole;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.Locale;
 
 /**

@@ -1,12 +1,11 @@
 package pl.edu.agh.gethere.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
-import pl.edu.agh.gethere.database.RepositoryManager;
+import pl.edu.agh.gethere.database.UserRepositoryManager;
 import pl.edu.agh.gethere.model.User;
 
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public class SesameAuthenticationProvider implements AuthenticationProvider {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        RepositoryManager repositoryManager = new RepositoryManager();
+        UserRepositoryManager repositoryManager = new UserRepositoryManager();
         if (repositoryManager.isUserAuthenticated(name, password)) {
             List<UserAuthority> authorities = new ArrayList<>();
             User user = repositoryManager.getUserByName(name);
