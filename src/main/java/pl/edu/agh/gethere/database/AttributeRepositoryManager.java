@@ -29,7 +29,7 @@ public class AttributeRepositoryManager extends RepositoryManager {
         while (result.hasNext()) {
             BindingSet bindingSet = result.next();
             String object = bindingSet.getValue("s").stringValue();
-            attributeDefinitions.add(object);
+            attributeDefinitions.add(object.replace(GETHERE_URL, ""));
         }
         return attributeDefinitions;
     }

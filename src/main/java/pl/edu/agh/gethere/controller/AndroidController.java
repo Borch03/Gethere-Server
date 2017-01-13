@@ -2,11 +2,10 @@ package pl.edu.agh.gethere.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.gethere.database.AttributeRepositoryManager;
 import pl.edu.agh.gethere.database.TripleRepositoryManager;
 import pl.edu.agh.gethere.database.TypeRepositoryManager;
@@ -25,16 +24,14 @@ public class AndroidController {
 
     final static Logger logger = Logger.getLogger(AndroidController.class);
 
-    @RequestMapping(value = {"/triple"}, method=RequestMethod.POST)
-    public ResponseEntity addTriple(List<Triple> triples) {
-
+    @RequestMapping(value = {"/triple"}, method =RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public void addTriple(@RequestBody List<Triple> triples) {
         TripleRepositoryManager repositoryManager = new TripleRepositoryManager();
         triples.forEach(repositoryManager::addStatement);
         repositoryManager.tearDown();
 
         logger.info("Successfully added triples to Repository");
-
-        return new ResponseEntity<String>(HttpStatus.CREATED);
     }
 
     @RequestMapping(value = {"/attribute"}, method= RequestMethod.GET)
@@ -59,9 +56,9 @@ public class AndroidController {
         return types;
     }
 
-    @RequestMapping(value = {"/keyword"}, method= RequestMethod.POST)
-    public @ResponseBody
-    List<Poi> getKeywordResults(String keyword) {
+    @RequestMapping(value = {"/keyword"}, method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody List<Poi> getKeywordResults(@RequestBody String keyword) {
         TripleRepositoryManager repositoryManager = new TripleRepositoryManager();
         List<Poi> pois = repositoryManager.getKeywordPois(keyword);
         repositoryManager.tearDown();
