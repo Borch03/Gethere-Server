@@ -33,15 +33,4 @@ public class TripleController {
 
         return "/shared/triple/triplesOverview";
     }
-
-    @RequestMapping(value = {"/addTriple"}, method=RequestMethod.POST)
-    public ResponseEntity addTriple(List<Triple> triples) {
-        TripleRepositoryManager repositoryManager = new TripleRepositoryManager();
-        triples.forEach(repositoryManager::addStatement);
-        repositoryManager.tearDown();
-
-        logger.info("Successfully added triples to Repository");
-
-        return new ResponseEntity<String>(HttpStatus.CREATED);
-    }
 }
