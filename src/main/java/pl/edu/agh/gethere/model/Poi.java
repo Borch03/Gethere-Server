@@ -14,13 +14,15 @@ public class Poi {
     private String name;
     private String type;
     private String coordinates;
+    private String openingHours;
     private HashMap<String, String> attributes;
 
-    public Poi(String id, String name, String type, String coordinates, HashMap<String, String> attributes) {
+    public Poi(String id, String name, String type, String coordinates, String openingHours, HashMap<String, String> attributes) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.coordinates = coordinates;
+        this.openingHours = openingHours;
         this.attributes = attributes;
     }
 
@@ -56,6 +58,14 @@ public class Poi {
 
     public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public String getOpeningHours() {
+        return openingHours;
+    }
+
+    public void setOpeningHours(String openingHours) {
+        this.openingHours = openingHours;
     }
 
     public HashMap<String, String> getAttributes() {

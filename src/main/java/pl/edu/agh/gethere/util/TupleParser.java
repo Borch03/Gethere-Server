@@ -20,6 +20,7 @@ public class TupleParser {
     public final static String TYPE_PREDICATE = "isTypeOf";
     public final static String NAME_PREDICATE = "hasName";
     public final static String COORDINATES_PREDICATE = "hasCoordinates";
+    public final static String OPENING_HOURS_PREDICATE = "hasOpeningHours";
     public final static String EMAIL_PREDICATE = "hasEmail";
     public final static String ROLE_PREDICATE = "hasRole";
 
@@ -49,6 +50,8 @@ public class TupleParser {
                 poi.setType(object.replace(GETHERE_URL, ""));
             } else if (predicate.equals(COORDINATES_PREDICATE)) {
                 poi.setCoordinates(object);
+            } else if (predicate.equals(OPENING_HOURS_PREDICATE)) {
+                poi.setOpeningHours(object);
             } else if (predicate.matches("has.*Info")) {
                 attributes.put(predicate.replace("(^has)|(Info$)",""), object);
             } else {
