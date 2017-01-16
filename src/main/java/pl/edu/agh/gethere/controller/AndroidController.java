@@ -13,6 +13,7 @@ import pl.edu.agh.gethere.model.Poi;
 import pl.edu.agh.gethere.model.Triple;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by SG0222581 on 1/6/2017.
@@ -34,6 +35,17 @@ public class AndroidController {
         logger.info("Successfully added triples to Repository");
     }
 
+    @RequestMapping(value = {"/type"}, method= RequestMethod.GET)
+    public @ResponseBody List<String> getTypes() {
+        TypeRepositoryManager repositoryManager = new TypeRepositoryManager();
+        List<String> types = repositoryManager.getTypes();
+        repositoryManager.tearDown();
+
+        logger.info("Successfully got types of POI from Repository");
+
+        return types;
+    }
+
     @RequestMapping(value = {"/attribute"}, method= RequestMethod.GET)
     public @ResponseBody List<String> getAttributeDefinitions() {
         AttributeRepositoryManager repositoryManager = new AttributeRepositoryManager();
@@ -45,15 +57,16 @@ public class AndroidController {
         return attributeDefinitions;
     }
 
-    @RequestMapping(value = {"/type"}, method= RequestMethod.GET)
-    public @ResponseBody List<String> getTypes() {
-        TypeRepositoryManager repositoryManager = new TypeRepositoryManager();
-        List<String> types = repositoryManager.getTypes();
+    @RequestMapping(value = {"/filter"}, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody List<Poi> getFilterResults(@RequestBody Map<String, String> filters) {
+        TripleRepositoryManager repositoryManager = new TripleRepositoryManager();
+        List<Poi> pois = repositoryManager.filterPois(filters);
         repositoryManager.tearDown();
 
-        logger.info("Successfully got types of POI from Repository");
+        logger.info("Found " + pois.size() + " POIs");
 
-        return types;
+        return pois;
     }
 
     @RequestMapping(value = {"/keyword"}, method = RequestMethod.POST)
