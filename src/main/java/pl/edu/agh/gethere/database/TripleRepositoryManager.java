@@ -117,9 +117,12 @@ public class TripleRepositoryManager extends RepositoryManager {
                 if (closingHour < openingHour) {
                     closingHour += 24 * 3600 * 1000;
                 }
-                if (!((openTime >= openingHour) && (openTime <= closingHour)) ||
+                if (!((openTime >= openingHour) && (openTime <= closingHour)) &&
                         !(((openTime + 24 * 3600 * 1000) >= openingHour) && ((openTime + 24 * 3600 * 1000) <= closingHour))) {
                     listOfPois.remove(poi);
+                }
+                if (listOfPois.isEmpty()) {
+                    return listOfPois;
                 }
             }
         }
@@ -139,6 +142,9 @@ public class TripleRepositoryManager extends RepositoryManager {
                 double distance = getDistanceInKilometers(locationLatitude, locationLongitude, poiLatitude, poiLongitude);
                 if (distance > radius) {
                     listOfPois.remove(poi);
+                }
+                if (listOfPois.isEmpty()) {
+                    return listOfPois;
                 }
             }
         }
