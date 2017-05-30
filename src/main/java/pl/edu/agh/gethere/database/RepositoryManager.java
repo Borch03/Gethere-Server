@@ -36,7 +36,7 @@ public abstract class RepositoryManager {
     public final static String GETHERE_URL = "http://gethere.agh.edu.pl/#";
     public final static String TYPE_PREDICATE = GETHERE_URL + "isTypeOf";
     public final static String SUBCLASS_PREDICATE = GETHERE_URL + "isSubclassOf";
-    public final static String SESAME_FILE = "database/sesame/";
+    public final static String SESAME_FILE = "/app/database/sesame/";
 
     final static Logger logger = Logger.getLogger(RepositoryManager.class);
 
