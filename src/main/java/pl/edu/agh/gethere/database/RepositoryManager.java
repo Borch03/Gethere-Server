@@ -13,12 +13,16 @@ import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.http.HTTPRepository;
+import org.openrdf.repository.sail.SailRepository;
+import org.openrdf.sail.memory.MemoryStore;
+import org.openrdf.sail.nativerdf.NativeStore;
 import org.springframework.stereotype.Component;
 import pl.edu.agh.gethere.model.Poi;
 import pl.edu.agh.gethere.model.Triple;
 import pl.edu.agh.gethere.model.User;
 import pl.edu.agh.gethere.util.TupleParser;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +36,7 @@ public abstract class RepositoryManager {
     public final static String GETHERE_URL = "http://gethere.agh.edu.pl/#";
     public final static String TYPE_PREDICATE = GETHERE_URL + "isTypeOf";
     public final static String SUBCLASS_PREDICATE = GETHERE_URL + "isSubclassOf";
+    public final static String SESAME_FILE = "database/sesame/";
 
     final static Logger logger = Logger.getLogger(RepositoryManager.class);
 
@@ -41,8 +46,10 @@ public abstract class RepositoryManager {
 
     public RepositoryManager() {
         try {
-            this.repositoryConfigurator = new RepositoryConfigurator();
-            this.repository = new HTTPRepository(repositoryConfigurator.getSesameServer(), repositoryConfigurator.getRepositoryID());
+//            this.repositoryConfigurator = new RepositoryConfigurator();
+//            this.repository = new HTTPRepository(repositoryConfigurator.getSesameServer(), repositoryConfigurator.getRepositoryID());
+            File dataDir = new File(SESAME_FILE);
+            repository = new SailRepository(new NativeStore(dataDir));
             this.repository.initialize();
             this.connection = repository.getConnection();
             logger.info("Successfully connected to Sesame Repository");
