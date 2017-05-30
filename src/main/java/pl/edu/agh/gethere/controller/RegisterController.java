@@ -34,7 +34,7 @@ public class RegisterController {
             model.addAttribute("addUserError", "true");
             return "register";
         }
-        user.setRole(UserRole.ROLE_USER);
+        user.setRole(UserRole.ROLE_ADMIN);
         repositoryManager.addUser(user);
         model.addAttribute("addUserSuccess", "true");
         return "/login";

@@ -52,6 +52,11 @@
 			<artifactId>sesame-repository-http</artifactId>
 			<version>4.1.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.openrdf.sesame</groupId>
+			<artifactId>sesame-sail-nativerdf</artifactId>
+			<version>4.1.2</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.assertj</groupId>
