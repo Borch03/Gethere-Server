@@ -36,6 +36,7 @@ public abstract class RepositoryManager {
     public final static String GETHERE_URL = "http://gethere.agh.edu.pl/#";
     public final static String TYPE_PREDICATE = GETHERE_URL + "isTypeOf";
     public final static String SUBCLASS_PREDICATE = GETHERE_URL + "isSubclassOf";
+    public final static String SESAME_FILE = "/tmp/sesame/";
 
     final static Logger logger = Logger.getLogger(RepositoryManager.class);
 
@@ -47,7 +48,8 @@ public abstract class RepositoryManager {
         try {
 //            this.repositoryConfigurator = new RepositoryConfigurator();
 //            this.repository = new HTTPRepository(repositoryConfigurator.getSesameServer(), repositoryConfigurator.getRepositoryID());
-            repository = new SailRepository(new MemoryStore());
+            File dataDir = new File(SESAME_FILE);
+            repository = new SailRepository(new NativeStore(dataDir));
             this.repository.initialize();
             this.connection = repository.getConnection();
             logger.info("Successfully connected to Sesame Repository");
